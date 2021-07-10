@@ -43,11 +43,6 @@
                         }
                         ?>
 
-                        <!-- <p>
-                        <?php echo lang('create_user_company_label', 'company'); ?> <br />
-                        <?php echo form_input($company); ?>
-                  </p> -->
-
                         <p>
                               <?php echo lang('create_user_email_label', 'email'); ?> <br />
                               <?php echo form_input($email); ?>
@@ -57,6 +52,14 @@
                               <?php echo lang('create_user_phone_label', 'phone'); ?> <br />
                               <?php echo form_input($phone); ?>
                         </p>
+                        <!-- <p>
+                    <?php echo lang('create_user_nik_label', 'nik'); ?> <br />
+                    <?php echo form_input($nik); ?>
+                  </p> -->
+                        <!-- <p>
+          <?php echo lang('create_user_jabatan_label', 'jabatan'); ?> <br />
+          <?php echo form_input($jabatan); ?>
+        </p> -->
 
                         <p>
                               <?php echo lang('create_user_password_label', 'password'); ?> <br />

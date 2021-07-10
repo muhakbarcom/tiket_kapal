@@ -413,7 +413,9 @@ class Auth extends CI_Controller
 			$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
 		}
 		// $this->form_validation->set_rules('foto', 'foto', 'required');
-		// $this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');
+		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'trim');
+		// $this->form_validation->set_rules('nik', $this->lang->line('create_user_validation_nik_label'), 'trim');
+		// $this->form_validation->set_rules('jabatan', $this->lang->line('create_user_validation_jabatan_label'), 'trim');
 		// $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'trim');
 		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
 		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
@@ -428,15 +430,17 @@ class Auth extends CI_Controller
 				'last_name' => $this->input->post('last_name'),
 				// 'company' => $this->input->post('company'),
 				'phone' => $this->input->post('phone'),
+				// 'nik' => $this->input->post('nik'),
+				// 'jabatan' => $this->input->post('jabatan'),
 				// 'foto' => $this->input->post('foto'),
 			);
 		}
-		// kembalikan nilai id user
-		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $additional_data)) {
-
+		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email, $additional_data)) {
+			// check to see if we are creating the user
+			// redirect them back to the admin page
 			$this->session->set_flashdata('success', $this->ion_auth->messages());
 
-			redirect("auth/register_penumpang", 'refresh');
+			redirect("user", 'refresh');
 		} else {
 			// display the create user form
 			// set the flash data error message if there is one
@@ -449,13 +453,6 @@ class Auth extends CI_Controller
 				'value' => $this->form_validation->set_value('first_name'),
 				'class' => 'form-control'
 			);
-			$this->data['phone'] = array(
-				'name' => 'phone',
-				'id' => 'phone',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('phone'),
-				'class' => 'form-control'
-			);
 			$this->data['last_name'] = array(
 				'name' => 'last_name',
 				'id' => 'last_name',
@@ -463,13 +460,13 @@ class Auth extends CI_Controller
 				'value' => $this->form_validation->set_value('last_name'),
 				'class' => 'form-control'
 			);
-			// $this->data['foto'] = array(
-			// 	'name' => 'foto',
-			// 	'id' => 'foto',
-			// 	'type' => 'file',
-			// 	'value' => $this->form_validation->set_value('foto'),
-			// 	'class' => 'form-control'
-			// );
+			$this->data['foto'] = array(
+				'name' => 'foto',
+				'id' => 'foto',
+				'type' => 'file',
+				'value' => $this->form_validation->set_value('foto'),
+				'class' => 'form-control'
+			);
 			$this->data['identity'] = array(
 				'name' => 'identity',
 				'id' => 'identity',
@@ -484,7 +481,34 @@ class Auth extends CI_Controller
 				'value' => $this->form_validation->set_value('email'),
 				'class' => 'form-control'
 			);
-
+			// $this->data['company'] = array(
+			// 	'name' => 'company',
+			// 	'id' => 'company',
+			// 	'type' => 'text',
+			// 	'value' => $this->form_validation->set_value('company'),
+			// 	'class' => 'form-control'
+			// );
+			$this->data['phone'] = array(
+				'name' => 'phone',
+				'id' => 'phone',
+				'type' => 'text',
+				'value' => $this->form_validation->set_value('phone'),
+				'class' => 'form-control'
+			);
+			// $this->data['nik'] = array(
+			// 	'name' => 'nik',
+			// 	'id' => 'nik',
+			// 	'type' => 'text',
+			// 	'value' => $this->form_validation->set_value('nik'),
+			// 	'class' => 'form-control'
+			// );
+			$this->data['jabatan'] = array(
+				'name' => 'jabatan',
+				'id' => '',
+				'type' => 'text',
+				'value' => $this->form_validation->set_value('jabatan'),
+				'class' => 'form-control'
+			);
 			$this->data['password'] = array(
 				'name' => 'password',
 				'id' => 'password',
@@ -499,7 +523,7 @@ class Auth extends CI_Controller
 				'value' => $this->form_validation->set_value('password_confirm'),
 				'class' => 'form-control'
 			);
-			$this->data['title'] = 'Registrasi';
+			$this->data['title'] = 'User';
 			$this->data['subtitle'] = '';
 			$this->data['crumb'] = [
 				'User' => '',
@@ -547,7 +571,6 @@ class Auth extends CI_Controller
 		if (isset($_POST) && !empty($_POST)) {
 			// do we have a valid request?
 			if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id')) {
-				show_error($this->lang->line('error_csrf'));
 			}
 
 			// update the password if it was posted
@@ -635,7 +658,7 @@ class Auth extends CI_Controller
 			'name'  => 'phone',
 			'id'    => 'phone',
 			'type'  => 'text',
-			// 'value' => $this->form_validation->set_value('phone', $user->phone),
+			'value' => $this->form_validation->set_value('phone', $user->phone),
 			'class' => 'form-control'
 		);
 		$this->data['password'] = array(

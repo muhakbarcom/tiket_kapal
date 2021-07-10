@@ -866,7 +866,7 @@ class Ion_auth_model extends CI_Model
 	 * @return    bool
 	 * @author    Mathew
 	 */
-	public function register($identity, $password, $additional_data = array(), $groups = array())
+	public function register($identity, $password, $email, $additional_data = array(), $groups = array())
 	{
 		$this->trigger_events('pre_register');
 
@@ -891,24 +891,24 @@ class Ion_auth_model extends CI_Model
 		$default_group = $query;
 
 		// IP Address
-		// $ip_address = $this->_prepare_ip($this->input->ip_address());
-		// $salt = $this->store_salt ? $this->salt() : FALSE;
-		$password = $this->hash_password($password);
+		$ip_address = $this->_prepare_ip($this->input->ip_address());
+		$salt = $this->store_salt ? $this->salt() : FALSE;
+		$password = $this->hash_password($password, $salt);
 
 		// Users table.
 		$data = array(
 			$this->identity_column => $identity,
-			// 'username' => $identity,
+			'username' => $identity,
 			'password' => $password,
-			'email' => $identity,
+			'email' => $email,
 			// 'ip_address' => $ip_address,
 			// 'created_on' => time(),
 			'active' => ($manual_activation === FALSE ? 1 : 0)
 		);
 
-		// if ($this->store_salt) {
-		// 	$data['salt'] = $salt;
-		// }
+		if ($this->store_salt) {
+			$data['salt'] = $salt;
+		}
 
 		// filter out any data passed that doesnt have a matching column in the users table
 		// and merge the set user data and the additional data
@@ -1948,7 +1948,7 @@ class Ion_auth_model extends CI_Model
 
 		// get the user
 		$this->trigger_events('extra_where');
-		$query = $this->db->select($this->identity_column . ', id, email, last_login')
+		$query = $this->db->select($this->identity_column . ', id, email')
 			->where($this->identity_column, urldecode(get_cookie($this->config->item('identity_cookie_name', 'ion_auth'))))
 			->where('remember_code', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
 			->where('active', 1)
@@ -1960,7 +1960,7 @@ class Ion_auth_model extends CI_Model
 		if ($query->num_rows() == 1) {
 			$user = $query->row();
 
-			$this->update_last_login($user->id);
+			// $this->update_last_login($user->id);
 
 			$this->set_session($user);
 
