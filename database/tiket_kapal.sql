@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2021 at 11:14 AM
+-- Generation Time: Jul 10, 2021 at 08:44 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -34,6 +34,15 @@ CREATE TABLE `detail_pemesanan` (
   `nomor_hp` int(11) NOT NULL,
   `jenis_kelamin` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `detail_pemesanan`
+--
+
+INSERT INTO `detail_pemesanan` (`id_detail_pemesanan`, `id_pemesanan`, `nama`, `nomor_hp`, `jenis_kelamin`) VALUES
+(1, 16, 'Muhammad Akbar', 2147483647, 'Laki'),
+(2, 17, 'Muhammad Akbar', 2147483647, 'Laki'),
+(3, 18, 'Muhammad Akbar', 2147483647, 'Laki');
 
 -- --------------------------------------------------------
 
@@ -140,10 +149,6 @@ INSERT INTO `groups_menu` (`id_groups`, `id_menu`) VALUES
 (2, 127),
 (1, 114),
 (32, 122),
-(2, 121),
-(32, 121),
-(2, 119),
-(32, 119),
 (1, 44),
 (1, 92),
 (32, 92),
@@ -156,9 +161,13 @@ INSERT INTO `groups_menu` (`id_groups`, `id_menu`) VALUES
 (2, 124),
 (32, 124),
 (33, 124),
+(2, 126),
+(2, 121),
+(32, 121),
+(2, 119),
+(32, 119),
 (2, 120),
-(32, 125),
-(2, 126);
+(32, 120);
 
 -- --------------------------------------------------------
 
@@ -170,8 +179,8 @@ CREATE TABLE `jadwal` (
   `id_jadwal` int(11) NOT NULL,
   `asal` varchar(50) NOT NULL,
   `tujuan` varchar(50) NOT NULL,
-  `tanggal_keberangkatan` date NOT NULL,
-  `tanggal_sampai` date NOT NULL,
+  `tanggal_keberangkatan` datetime NOT NULL,
+  `tanggal_sampai` datetime NOT NULL,
   `harga_tiket` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -180,7 +189,8 @@ CREATE TABLE `jadwal` (
 --
 
 INSERT INTO `jadwal` (`id_jadwal`, `asal`, `tujuan`, `tanggal_keberangkatan`, `tanggal_sampai`, `harga_tiket`) VALUES
-(3, 'Bangkalan', 'Bandung', '2021-07-21', '2021-07-28', 100000);
+(6, 'Bandung', 'Jakarta', '2021-07-03 17:15:58', '2021-07-21 17:15:58', 20000),
+(7, 'Medan', 'Aceh', '2021-07-04 17:20:24', '2021-07-06 17:20:24', 2000000);
 
 -- --------------------------------------------------------
 
@@ -194,6 +204,14 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(19, '::1', 'admin@muhakbar.com', 1625885371),
+(20, '::1', 'admin@muhakbar.com', 1625899257);
 
 -- --------------------------------------------------------
 
@@ -232,11 +250,10 @@ INSERT INTO `menu` (`id_menu`, `sort`, `level`, `parent_id`, `icon`, `label`, `l
 (114, 9, 2, 92, 'far fa-calendar-alt', 'Jadwal Keberangkatan', 'jadwal', '1', 1),
 (119, 2, 2, 1, 'fas fa-ship', 'Pemesanan', '#', '1', 1),
 (120, 4, 3, 119, 'fas fa-ticket-alt', 'Pesan Tiket', 'pemesanan/penumpang_pesan', '#', 1),
-(121, 5, 3, 119, 'fas fa-history', 'History Pemesanan', '#', '1', 1),
+(121, 5, 3, 119, 'fas fa-history', 'History Pemesanan', 'pemesanan', '1', 1),
 (122, 6, 2, 1, 'far fa-file', 'Laporan', '#', '1', 1),
 (123, 18, 1, 0, 'fab fa-amazon-pay', 'Auth', '#', '#', 1),
 (124, 19, 2, 123, 'fab fa-dyalog', 'Logout', 'auth/logout', '#', 1),
-(125, 3, 3, 119, 'fas fa-ticket-alt', 'Pesan Tiket', 'pemesanan/kasir_pesan', '#', 1),
 (126, 7, 2, 1, 'fas fa-user', 'Data Saya', 'penumpang/data_saya', '#', 1);
 
 -- --------------------------------------------------------
@@ -271,6 +288,15 @@ CREATE TABLE `pembayaran` (
   `status_bayar` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_pembayaran`, `id_pemesanan`, `metode`, `tanggal_bayar`, `status_bayar`) VALUES
+(1, 9, 'CASH', '2021-07-04', 'dibayar'),
+(2, 17, 'GOPAY', '2021-07-04', 'dibayar'),
+(3, 18, 'BRI', '2021-07-04', 'dibayar');
+
 -- --------------------------------------------------------
 
 --
@@ -284,6 +310,30 @@ CREATE TABLE `pemesanan` (
   `status_pemesanan` varchar(50) NOT NULL,
   `tanggal_pemesanan` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pemesanan`
+--
+
+INSERT INTO `pemesanan` (`id_pemesanan`, `id_user`, `id_jadwal`, `status_pemesanan`, `tanggal_pemesanan`) VALUES
+(1, 21, 6, 'Dipesan', '0000-00-00'),
+(2, 21, 6, 'Dipesan', '2021-07-03'),
+(3, 21, 7, 'Dipesan', '2021-07-03'),
+(4, 21, 6, 'Dipesan', '2021-07-03'),
+(5, 21, 7, 'Dipesan', '2021-07-03'),
+(6, 22, 6, 'Dipesan', '2021-07-04'),
+(7, 22, 6, 'Dipesan', '2021-07-04'),
+(8, 22, 7, 'Dipesan', '2021-07-04'),
+(9, 22, 7, 'Dipesan', '2021-07-04'),
+(10, 22, 6, 'Dipesan', '2021-07-04'),
+(11, 22, 6, 'Dipesan', '2021-07-04'),
+(12, 22, 6, 'Dipesan', '2021-07-04'),
+(13, 22, 6, 'Dipesan', '2021-07-04'),
+(14, 22, 6, 'Dipesan', '2021-07-04'),
+(15, 22, 6, 'Dipesan', '2021-07-04'),
+(16, 22, 6, 'Dipesan', '2021-07-04'),
+(17, 22, 6, 'Dipesan', '2021-07-04'),
+(18, 22, 6, 'Dipesan', '2021-07-04');
 
 -- --------------------------------------------------------
 
@@ -307,7 +357,10 @@ INSERT INTO `penumpang` (`id_penumpang`, `id_user`, `alamat`, `jens_kelamin`, `n
 (1, 13, 'Jalan Sarijadi Blok 02 No 118 Rt 06/02', 'Laki Laki', 2147483647),
 (2, 19, 'Jalan Sarijadi Blok 02 No 118 Rt 06/02', 'Laki Laki', 2147483647),
 (3, 20, 'Jalan Sarijadi Blok 02 No 118 Rt 06/02', 'Laki Laki', 2147483647),
-(4, 21, 'kjaisbdnjkasd', 'laki', 908908908);
+(4, 21, 'kjaisbdnjkasd', 'laki', 908908908),
+(5, 22, 'Jalan Sarijadi Blok 02 No 118 Rt 06/02', 'Laki Laki', 2147483647),
+(6, 29, 'Jalan Sarijadi Blok 02 No 118 Rt 06/02', 'Laki Laki', 2147483647),
+(7, 31, 'Jalan Sarijadi Blok 02 No 118 Rt 06/02', 's', 2147483647);
 
 -- --------------------------------------------------------
 
@@ -337,29 +390,32 @@ INSERT INTO `setting` (`id`, `kode`, `nama`, `nilai`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `email` varchar(254) NOT NULL,
-  `active` tinyint(1) UNSIGNED DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
-  `image` varchar(128) NOT NULL DEFAULT 'default.jpg'
+  `image` varchar(128) NOT NULL DEFAULT '''default.jpg''',
+  `active` tinyint(1) UNSIGNED DEFAULT NULL,
+  `phone` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `password`, `email`, `active`, `first_name`, `last_name`, `image`) VALUES
-(1, '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', 'admin@muhakbar.com', 1, 'Akbar', 'Admin', 'akbr_pp_2.jpg'),
-(13, '$2y$08$GFbtgOEJDsBjS3BXQq2cg.npg9mumOeqKEMWVAfKfdjH5L9lXmWiS', 'penumpang01@gmail.com', 1, 'Penumpang', '01', 'default.jpg'),
-(14, '$2y$08$Mmx4Lc4eSqoJCo5x9XvL3OnXtuUtUfzrfsLhv9EqNfOItj1T71vnC', 'admin01@gmail.com', 1, 'admin', '01', 'default.jpg'),
-(15, '$2y$08$0oAIatoQAr1hOycODs.04uMCXx4kiFevoHJFuUWFTDE8F1ZMF37tG', 'kasir01@gmail.com', 1, 'Kasir', '01', 'default.jpg'),
-(16, '$2y$08$hoTaK2Gtln6lQk8MDpjfOOFBotvB3bMc2prWhxchP/2dduEnlLyfS', 'pemilik01@gmail.com', 1, 'Pemilik', '01', 'default.jpg'),
-(17, '$2y$08$WBgrlksYrsR80WjJOfabQO6onykL1uJU0OLR.fl5yGtE0W4NkTifG', 'akbar@gmail.com', 1, 'Muhammad', 'Akbar', 'default.jpg'),
-(18, '$2y$08$zvKwhQ8CbkAR5H9zn0jaOOC5lEGv2ed3fJ0HPr3hy7HOPXejTj6jO', 'penumpang02@gmail.com', 1, 'Muhammad', 'Akbar', 'default.jpg'),
-(19, '$2y$08$39uERe0WOZ9qq.uf8s8KDuw.KXZdN3qQRx8jzMadEoX/ctZrmuXnS', 'sad@gmail.com', 1, 'asides', 'salads', 'default.jpg'),
-(20, '$2y$08$kPN9ey3u9mBVortX4deXXup9rQkf89PKNMxQjYzTuDsxUJL0NvIhS', 'bismillah@gmail.com', 1, 'bismilah', 'a', 'default.jpg'),
-(21, '$2y$08$Hj8Znoxp6uaWP308DbV2tOfajFtVTVpS568wJa.rq/zxOJH8D.2lO', 'tai@gmail.com', 1, 'adasd', 'asdasd', 'default.jpg');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `image`, `active`, `phone`) VALUES
+(13, '', 'penumpang01@gmail.com', '$2y$08$GFbtgOEJDsBjS3BXQq2cg.npg9mumOeqKEMWVAfKfdjH5L9lXmWiS', 'Penumpang', '01', 'default.jpg', 1, 0),
+(16, '', 'pemilik01@gmail.com', '$2y$08$hoTaK2Gtln6lQk8MDpjfOOFBotvB3bMc2prWhxchP/2dduEnlLyfS', 'Pemilik', '01', 'default.jpg', 1, 0),
+(17, '', 'akbar@gmail.com', '$2y$08$WBgrlksYrsR80WjJOfabQO6onykL1uJU0OLR.fl5yGtE0W4NkTifG', 'Muhammad', 'Akbar', 'default.jpg', 1, 0),
+(22, '', 'penumpang03@gmail.com', '$2y$08$MCV7uZEVRGizY5kQBooaM.By3I8/2g.72/EGj5.iiJZxv5adWOOzW', 'Penumpang', '03', 'default.jpg', 1, 0),
+(37, 'kasir01@gmail.com', 'kasir01@gmail.com', '$2y$08$sOa8RXQxqY0m9.B5/0kzRuVFvmbClWDko6W6l66D7KlbHobYDbmba', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
+(38, 'kasir011@gmail.com', 'kasir011@gmail.com', '$2y$08$XMe2V9/8dhy8RfeNThxIOOmU6NNS3zg8DsLaFmU8C8ZmET6Gs.ZTW', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
+(39, 'kasir0112@gmail.com', 'kasir0112@gmail.com', '$2y$08$5dISZVJnvKbcvz2hsbvT..FtqosUAVX4ixhVy1bzpCuTHy7mtfXqW', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
+(40, 'kasir011s2@gmail.com', 'kasir011s2@gmail.com', '$2y$08$U5nYZxxGcDtH1FYva/PiW.UMZ7yYugGwXxGozWdeYUfDgjUshozm6', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
+(41, 'muhakba@gmail.com', 'muhakba@gmail.com', '$2y$08$13CySjFLnqMX5G03me4BCuTR/.sjrIBgq8JR51e3jhbF.nqTcsSqa', 'akbari', 'akbar', '\'default.jpg\'', 1, 9090909),
+(42, 'sopan@gmail.com', 'sopan@gmail.com', '$2y$08$HamGFJ7rbPuayNac.7l6eOoo.muoyOJfNWVUvRIANE6cKTswqSmwS', 'kjadnkja', 'kasndkjans', '\'default.jpg\'', 1, 9888),
+(43, 'admin01@gmail.com', 'admin01@gmail.com', '$2y$08$urcNDf0z01yg4SkwgBbdJuYelRDbs8qcNHYDMSXgw/I6MT5YmH0VO', 'admin', '01', '\'default.jpg\'', 1, 2147483647);
 
 -- --------------------------------------------------------
 
@@ -378,48 +434,13 @@ CREATE TABLE `users_groups` (
 --
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
-(24, 1, 1),
-(11, 3, 2),
-(10, 4, 2),
-(13, 5, 8),
-(17, 6, 5),
-(19, 7, 6),
-(21, 8, 7),
-(1, 9, 17),
 (91, 13, 2),
 (64, 13, 18),
-(95, 14, 1),
-(96, 15, 32),
 (97, 16, 33),
-(98, 17, 2),
-(75, 17, 17),
-(99, 18, 2),
-(76, 18, 17),
-(100, 19, 2),
-(77, 19, 17),
-(101, 20, 2),
-(84, 20, 17),
-(102, 21, 2),
-(78, 21, 17),
-(81, 22, 28),
-(85, 23, 17),
-(60, 24, 28),
-(73, 25, 28),
-(79, 26, 28),
-(80, 27, 28),
-(82, 28, 28),
-(72, 29, 28),
-(83, 30, 28),
-(59, 31, 17),
-(86, 32, 26),
-(65, 33, 7),
-(69, 34, 7),
-(71, 35, 7),
-(61, 36, 29),
-(62, 37, 2),
-(63, 38, 2),
-(88, 39, 31),
-(89, 40, 2);
+(98, 17, 1),
+(140, 41, 2),
+(139, 42, 2),
+(141, 43, 2);
 
 --
 -- Indexes for dumped tables
@@ -508,25 +529,25 @@ ALTER TABLE `users_groups`
 -- AUTO_INCREMENT for table `detail_pemesanan`
 --
 ALTER TABLE `detail_pemesanan`
-  MODIFY `id_detail_pemesanan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `jadwal`
 --
 ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `menu`
@@ -544,19 +565,19 @@ ALTER TABLE `menu_type`
 -- AUTO_INCREMENT for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `penumpang`
 --
 ALTER TABLE `penumpang`
-  MODIFY `id_penumpang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_penumpang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `setting`
@@ -568,13 +589,13 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
