@@ -41,6 +41,29 @@ class Pemesanan_model extends CI_Model
         return $this->db->count_all_results();
     }
 
+    function total_rows_kasir($q = NULL, $id_user)
+    {
+        // $this->db->like('id_pemesanan', $q);
+        // $this->db->or_like('id_user', $q);
+        // $this->db->or_like('id_jadwal', $q);
+        // $this->db->or_like('status_pemesanan', $q);
+        // $this->db->or_like('tanggal_pemesanan', $q);
+        $this->db->where('id_user', $id_user);
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+    function total_rows_penumpang($q = NULL, $id_user)
+    {
+        // $this->db->like('id_pemesanan', $q);
+        // $this->db->or_like('id_user', $q);
+        // $this->db->or_like('id_jadwal', $q);
+        // $this->db->or_like('status_pemesanan', $q);
+        // $this->db->or_like('tanggal_pemesanan', $q);
+        $this->db->where('id_user', $id_user);
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL)
     {

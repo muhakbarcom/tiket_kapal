@@ -69,9 +69,9 @@ class Pemesanan extends CI_Controller
 
         $config['per_page'] = 10;
         $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Pemesanan_model->total_rows($q);
         $id_user = $this->ion_auth->user()->row();
         $id_user = $id_user->id;
+        $config['total_rows'] = $this->Pemesanan_model->total_rows_penumpang($q, $id_user);
         $pemesanan = $this->Pemesanan_model->get_limit_data_penumpang($config['per_page'], $start, $q, $id_user);
 
         $this->load->library('pagination');
@@ -108,9 +108,10 @@ class Pemesanan extends CI_Controller
 
         $config['per_page'] = 10;
         $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Pemesanan_model->total_rows($q);
+        // $config['total_rows'] = $this->Pemesanan_model->total_rows_kasir($q);
         $id_user = $this->ion_auth->user()->row();
         $id_user = $id_user->id;
+        $config['total_rows'] = $this->Pemesanan_model->total_rows_penumpang($q, $id_user);
         $pemesanan = $this->Pemesanan_model->get_limit_data_kasir($config['per_page'], $start, $q, $id_user);
 
         $this->load->library('pagination');
