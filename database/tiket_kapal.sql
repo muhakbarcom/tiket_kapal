@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2021 at 08:44 AM
+-- Generation Time: Jul 10, 2021 at 06:30 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -42,7 +42,10 @@ CREATE TABLE `detail_pemesanan` (
 INSERT INTO `detail_pemesanan` (`id_detail_pemesanan`, `id_pemesanan`, `nama`, `nomor_hp`, `jenis_kelamin`) VALUES
 (1, 16, 'Muhammad Akbar', 2147483647, 'Laki'),
 (2, 17, 'Muhammad Akbar', 2147483647, 'Laki'),
-(3, 18, 'Muhammad Akbar', 2147483647, 'Laki');
+(3, 18, 'Muhammad Akbar', 2147483647, 'Laki'),
+(4, 19, 'akbar', 2147483647, 'Laki'),
+(5, 20, 'Muhammad Akbar', 2147483647, 'Laki'),
+(6, 21, 'asdasdasd', 2147483647, 'asdasd');
 
 -- --------------------------------------------------------
 
@@ -91,68 +94,8 @@ INSERT INTO `groups_menu` (`id_groups`, `id_menu`) VALUES
 (1, 94),
 (1, 43),
 (1, 42),
-(1, 1),
-(2, 1),
-(5, 1),
-(6, 1),
-(7, 1),
-(8, 1),
-(9, 1),
-(10, 1),
-(11, 1),
-(12, 1),
-(13, 1),
-(14, 1),
-(15, 1),
-(16, 1),
-(17, 1),
-(18, 1),
-(19, 1),
-(20, 1),
-(21, 1),
-(22, 1),
-(23, 1),
-(24, 1),
-(25, 1),
-(26, 1),
-(27, 1),
-(28, 1),
-(29, 1),
-(1, 3),
-(2, 3),
-(5, 3),
-(6, 3),
-(7, 3),
-(8, 3),
-(9, 3),
-(10, 3),
-(11, 3),
-(12, 3),
-(13, 3),
-(14, 3),
-(15, 3),
-(16, 3),
-(17, 3),
-(18, 3),
-(19, 3),
-(20, 3),
-(21, 3),
-(22, 3),
-(23, 3),
-(24, 3),
-(25, 3),
-(26, 3),
-(27, 3),
-(28, 3),
-(29, 3),
-(1, 127),
-(2, 127),
 (1, 114),
-(32, 122),
 (1, 44),
-(1, 92),
-(32, 92),
-(33, 92),
 (1, 123),
 (2, 123),
 (32, 123),
@@ -162,12 +105,23 @@ INSERT INTO `groups_menu` (`id_groups`, `id_menu`) VALUES
 (32, 124),
 (33, 124),
 (2, 126),
-(2, 121),
-(32, 121),
+(32, 128),
+(1, 3),
+(2, 3),
+(32, 3),
+(33, 3),
+(1, 1),
+(2, 1),
+(32, 1),
+(33, 1),
+(1, 92),
+(33, 92),
+(32, 129),
+(32, 127),
 (2, 119),
-(32, 119),
 (2, 120),
-(32, 120);
+(2, 121),
+(33, 122);
 
 -- --------------------------------------------------------
 
@@ -195,6 +149,17 @@ INSERT INTO `jadwal` (`id_jadwal`, `asal`, `tujuan`, `tanggal_keberangkatan`, `t
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `laporan_penjualan`
+-- (See below for the actual view)
+--
+CREATE TABLE `laporan_penjualan` (
+`tanggal` varchar(10)
+,`tiket_terjual` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `login_attempts`
 --
 
@@ -211,7 +176,9 @@ CREATE TABLE `login_attempts` (
 
 INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
 (19, '::1', 'admin@muhakbar.com', 1625885371),
-(20, '::1', 'admin@muhakbar.com', 1625899257);
+(20, '::1', 'admin@muhakbar.com', 1625899257),
+(21, '::1', 'kasir02@gmail.com', 1625926242),
+(22, '::1', 'admin@muhakbar.com', 1625926247);
 
 -- --------------------------------------------------------
 
@@ -238,23 +205,26 @@ CREATE TABLE `menu` (
 INSERT INTO `menu` (`id_menu`, `sort`, `level`, `parent_id`, `icon`, `label`, `link`, `id`, `id_menu_type`) VALUES
 (1, 0, 1, 0, 'empty', 'MAIN NAVIGATION', '#', '#', 1),
 (3, 1, 2, 1, 'fas fa-tachometer-alt', 'Dashboard', 'dashboard', '#', 1),
-(4, 17, 2, 40, 'fas fa-table', 'CRUD Generator', 'crudbuilder', '1', 1),
-(8, 15, 2, 40, 'fas fa-bars', 'Menu', 'cms/menu/side-menu', 'navMenu', 1),
-(40, 13, 1, 0, 'empty', 'DEV', '#', '#', 1),
-(42, 10, 2, 92, 'fas fa-users-cog', 'User', '#', '1', 1),
-(43, 11, 3, 42, 'fas fa-angle-double-right', 'Users', 'users', '1', 1),
-(44, 12, 3, 42, 'fas fa-angle-double-right', 'Hak Akses', 'groups', '2', 1),
-(89, 16, 2, 40, 'fas fa-th-list', 'Menu Type', 'menu_type', 'menu_type', 1),
-(92, 8, 1, 0, 'empty', 'MASTER DATA', '#', 'masterdata', 1),
-(107, 14, 2, 40, 'fas fa-cog', 'Setting', 'setting', 'setting', 1),
-(114, 9, 2, 92, 'far fa-calendar-alt', 'Jadwal Keberangkatan', 'jadwal', '1', 1),
-(119, 2, 2, 1, 'fas fa-ship', 'Pemesanan', '#', '1', 1),
-(120, 4, 3, 119, 'fas fa-ticket-alt', 'Pesan Tiket', 'pemesanan/penumpang_pesan', '#', 1),
-(121, 5, 3, 119, 'fas fa-history', 'History Pemesanan', 'pemesanan', '1', 1),
-(122, 6, 2, 1, 'far fa-file', 'Laporan', '#', '1', 1),
-(123, 18, 1, 0, 'fab fa-amazon-pay', 'Auth', '#', '#', 1),
-(124, 19, 2, 123, 'fab fa-dyalog', 'Logout', 'auth/logout', '#', 1),
-(126, 7, 2, 1, 'fas fa-user', 'Data Saya', 'penumpang/data_saya', '#', 1);
+(4, 19, 2, 40, 'fas fa-table', 'CRUD Generator', 'crudbuilder', '1', 1),
+(8, 17, 2, 40, 'fas fa-bars', 'Menu', 'cms/menu/side-menu', 'navMenu', 1),
+(40, 15, 1, 0, 'empty', 'DEV', '#', '#', 1),
+(42, 12, 2, 92, 'fas fa-users-cog', 'User', '#', '1', 1),
+(43, 13, 3, 42, 'fas fa-angle-double-right', 'Users', 'users', '1', 1),
+(44, 14, 3, 42, 'fas fa-angle-double-right', 'Hak Akses', 'groups', '2', 1),
+(89, 18, 2, 40, 'fas fa-th-list', 'Menu Type', 'menu_type', 'menu_type', 1),
+(92, 10, 1, 0, 'empty', 'MASTER DATA', '#', 'masterdata', 1),
+(107, 16, 2, 40, 'fas fa-cog', 'Setting', 'setting', 'setting', 1),
+(114, 11, 2, 92, 'far fa-calendar-alt', 'Jadwal Keberangkatan', 'jadwal', '1', 1),
+(119, 5, 2, 1, 'fas fa-ship', 'Pemesanan', '#', '1', 1),
+(120, 6, 3, 119, 'fas fa-ticket-alt', 'Pesan Tiket', 'pemesanan/penumpang_pesan', '#', 1),
+(121, 7, 3, 119, 'fas fa-history', 'History Pemesanan', 'pemesanan', '1', 1),
+(122, 9, 2, 1, 'far fa-file', 'Laporan Penjualan', 'laporan_penjualan', '1', 1),
+(123, 20, 1, 0, 'fab fa-amazon-pay', 'Auth', '#', '#', 1),
+(124, 21, 2, 123, 'fab fa-dyalog', 'Logout', 'auth/logout', '#', 1),
+(126, 8, 2, 1, 'fas fa-user', 'Data Saya', 'penumpang/data_saya', '#', 1),
+(127, 3, 3, 129, 'fas fa-ship', 'Pesan Tiket', 'pemesanan/kasir_pesan', '1', 1),
+(128, 4, 3, 129, 'fas fa-ticket-alt', 'History Pemesanan', 'pemesanan/pemesanan_kasir', '1', 1),
+(129, 2, 2, 1, 'fas fa-ship', 'Pemesanan Kasir', '#', '#', 1);
 
 -- --------------------------------------------------------
 
@@ -295,7 +265,10 @@ CREATE TABLE `pembayaran` (
 INSERT INTO `pembayaran` (`id_pembayaran`, `id_pemesanan`, `metode`, `tanggal_bayar`, `status_bayar`) VALUES
 (1, 9, 'CASH', '2021-07-04', 'dibayar'),
 (2, 17, 'GOPAY', '2021-07-04', 'dibayar'),
-(3, 18, 'BRI', '2021-07-04', 'dibayar');
+(3, 18, 'BRI', '2021-07-04', 'dibayar'),
+(4, 19, 'BRI', '2021-07-10', 'dibayar'),
+(5, 20, 'CASH', '2021-07-10', 'dibayar'),
+(6, 21, 'DANA', '2021-07-10', 'dibayar');
 
 -- --------------------------------------------------------
 
@@ -333,7 +306,10 @@ INSERT INTO `pemesanan` (`id_pemesanan`, `id_user`, `id_jadwal`, `status_pemesan
 (15, 22, 6, 'Dipesan', '2021-07-04'),
 (16, 22, 6, 'Dipesan', '2021-07-04'),
 (17, 22, 6, 'Dipesan', '2021-07-04'),
-(18, 22, 6, 'Dipesan', '2021-07-04');
+(18, 22, 6, 'Dipesan', '2021-07-04'),
+(19, 22, 6, 'Dipesan', '2021-07-10'),
+(20, 46, 6, 'Dipesan', '2021-07-10'),
+(21, 22, 6, 'Dipesan', '2021-07-10');
 
 -- --------------------------------------------------------
 
@@ -395,7 +371,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
-  `image` varchar(128) NOT NULL DEFAULT '''default.jpg''',
+  `image` varchar(128) NOT NULL DEFAULT 'default.jpg',
   `active` tinyint(1) UNSIGNED DEFAULT NULL,
   `phone` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -409,13 +385,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_
 (16, '', 'pemilik01@gmail.com', '$2y$08$hoTaK2Gtln6lQk8MDpjfOOFBotvB3bMc2prWhxchP/2dduEnlLyfS', 'Pemilik', '01', 'default.jpg', 1, 0),
 (17, '', 'akbar@gmail.com', '$2y$08$WBgrlksYrsR80WjJOfabQO6onykL1uJU0OLR.fl5yGtE0W4NkTifG', 'Muhammad', 'Akbar', 'default.jpg', 1, 0),
 (22, '', 'penumpang03@gmail.com', '$2y$08$MCV7uZEVRGizY5kQBooaM.By3I8/2g.72/EGj5.iiJZxv5adWOOzW', 'Penumpang', '03', 'default.jpg', 1, 0),
-(37, 'kasir01@gmail.com', 'kasir01@gmail.com', '$2y$08$sOa8RXQxqY0m9.B5/0kzRuVFvmbClWDko6W6l66D7KlbHobYDbmba', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
-(38, 'kasir011@gmail.com', 'kasir011@gmail.com', '$2y$08$XMe2V9/8dhy8RfeNThxIOOmU6NNS3zg8DsLaFmU8C8ZmET6Gs.ZTW', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
-(39, 'kasir0112@gmail.com', 'kasir0112@gmail.com', '$2y$08$5dISZVJnvKbcvz2hsbvT..FtqosUAVX4ixhVy1bzpCuTHy7mtfXqW', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
-(40, 'kasir011s2@gmail.com', 'kasir011s2@gmail.com', '$2y$08$U5nYZxxGcDtH1FYva/PiW.UMZ7yYugGwXxGozWdeYUfDgjUshozm6', 'Kasir', '01', '\'default.jpg\'', 1, 2147483647),
-(41, 'muhakba@gmail.com', 'muhakba@gmail.com', '$2y$08$13CySjFLnqMX5G03me4BCuTR/.sjrIBgq8JR51e3jhbF.nqTcsSqa', 'akbari', 'akbar', '\'default.jpg\'', 1, 9090909),
-(42, 'sopan@gmail.com', 'sopan@gmail.com', '$2y$08$HamGFJ7rbPuayNac.7l6eOoo.muoyOJfNWVUvRIANE6cKTswqSmwS', 'kjadnkja', 'kasndkjans', '\'default.jpg\'', 1, 9888),
-(43, 'admin01@gmail.com', 'admin01@gmail.com', '$2y$08$urcNDf0z01yg4SkwgBbdJuYelRDbs8qcNHYDMSXgw/I6MT5YmH0VO', 'admin', '01', '\'default.jpg\'', 1, 2147483647);
+(46, 'kasir@gmail.com', 'kasir@gmail.com', '$2y$08$3YhcfgSnrEIXXiYFEB.o0OWhVImF2wMOsnuZw1iL72lMGMs4SyLaa', 'Kasir', '01', 'default.jpg', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -438,9 +408,17 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (64, 13, 18),
 (97, 16, 33),
 (98, 17, 1),
-(140, 41, 2),
-(139, 42, 2),
-(141, 43, 2);
+(142, 22, 2),
+(148, 46, 32);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `laporan_penjualan`
+--
+DROP TABLE IF EXISTS `laporan_penjualan`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `laporan_penjualan`  AS  (select substr(`pemesanan`.`tanggal_pemesanan`,1,10) AS `tanggal`,count(`pemesanan`.`id_pemesanan`) AS `tiket_terjual` from `pemesanan` group by substr(`pemesanan`.`tanggal_pemesanan`,1,10) order by substr(`pemesanan`.`tanggal_pemesanan`,1,10) desc) ;
 
 --
 -- Indexes for dumped tables
@@ -529,7 +507,7 @@ ALTER TABLE `users_groups`
 -- AUTO_INCREMENT for table `detail_pemesanan`
 --
 ALTER TABLE `detail_pemesanan`
-  MODIFY `id_detail_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_detail_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `groups`
@@ -547,13 +525,13 @@ ALTER TABLE `jadwal`
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `menu_type`
@@ -565,13 +543,13 @@ ALTER TABLE `menu_type`
 -- AUTO_INCREMENT for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `penumpang`
@@ -589,13 +567,13 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
