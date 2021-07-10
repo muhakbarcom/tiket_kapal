@@ -502,13 +502,13 @@ class Auth extends CI_Controller
 			// 	'value' => $this->form_validation->set_value('nik'),
 			// 	'class' => 'form-control'
 			// );
-			$this->data['jabatan'] = array(
-				'name' => 'jabatan',
-				'id' => '',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('jabatan'),
-				'class' => 'form-control'
-			);
+			// $this->data['jabatan'] = array(
+			// 	'name' => 'jabatan',
+			// 	'id' => '',
+			// 	'type' => 'text',
+			// 	'value' => $this->form_validation->set_value('jabatan'),
+			// 	'class' => 'form-control'
+			// );
 			$this->data['password'] = array(
 				'name' => 'password',
 				'id' => 'password',

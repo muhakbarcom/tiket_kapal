@@ -54,6 +54,31 @@ class Pemesanan_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_limit_data_penumpang($limit, $start = 0, $q = NULL, $id_user)
+    {
+        $this->db->order_by($this->id, $this->order);
+        // $this->db->like('id_pemesanan', $q);
+        // $this->db->or_like('id_user', $q);
+        // $this->db->or_like('id_jadwal', $q);
+        // $this->db->or_like('status_pemesanan', $q);
+        // $this->db->or_like('tanggal_pemesanan', $q);
+        $this->db->where('id_user', $id_user);
+        $this->db->limit($limit, $start);
+        return $this->db->get($this->table)->result();
+    }
+    function get_limit_data_kasir($limit, $start = 0, $q = NULL, $id_user)
+    {
+        $this->db->order_by($this->id, $this->order);
+        // $this->db->like('id_pemesanan', $q);
+        // $this->db->or_like('id_user', $q);
+        // $this->db->or_like('id_jadwal', $q);
+        // $this->db->or_like('status_pemesanan', $q);
+        // $this->db->or_like('tanggal_pemesanan', $q);
+        $this->db->where('id_user', $id_user);
+        $this->db->limit($limit, $start);
+        return $this->db->get($this->table)->result();
+    }
+
     // insert data
     function insert($data)
     {

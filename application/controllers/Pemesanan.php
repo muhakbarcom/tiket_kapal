@@ -54,6 +54,85 @@ class Pemesanan extends CI_Controller
         $this->load->view('template/backend', $data);
     }
 
+    public function pemesanan_penumpang()
+    {
+        $q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->input->get('start'));
+
+        if ($q <> '') {
+            $config['base_url'] = base_url() . 'pemesanan/pemesanan_penumpang?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'pemesanan/pemesanan_penumpang?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'pemesanan/pemesanan_penumpang';
+            $config['first_url'] = base_url() . 'pemesanan/pemesanan_penumpang';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = TRUE;
+        $config['total_rows'] = $this->Pemesanan_model->total_rows($q);
+        $id_user = $this->ion_auth->user()->row();
+        $id_user = $id_user->id;
+        $pemesanan = $this->Pemesanan_model->get_limit_data_penumpang($config['per_page'], $start, $q, $id_user);
+
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+
+        $data = array(
+            'pemesanan_data' => $pemesanan,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
+        );
+        $data['title'] = 'Pemesanan';
+        $data['subtitle'] = '';
+        $data['crumb'] = [
+            'Pemesanan' => '',
+        ];
+
+        $data['page'] = 'pemesanan/pemesanan_list';
+        $this->load->view('template/backend', $data);
+    }
+    public function pemesanan_kasir()
+    {
+        $q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->input->get('start'));
+
+        if ($q <> '') {
+            $config['base_url'] = base_url() . 'pemesanan/pemesanan_kasir?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'pemesanan/pemesanan_kasir?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'pemesanan/pemesanan_kasir';
+            $config['first_url'] = base_url() . 'pemesanan/pemesanan_kasir';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = TRUE;
+        $config['total_rows'] = $this->Pemesanan_model->total_rows($q);
+        $id_user = $this->ion_auth->user()->row();
+        $id_user = $id_user->id;
+        $pemesanan = $this->Pemesanan_model->get_limit_data_kasir($config['per_page'], $start, $q, $id_user);
+
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+
+        $data = array(
+            'pemesanan_data' => $pemesanan,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
+        );
+        $data['title'] = 'Pemesanan';
+        $data['subtitle'] = '';
+        $data['crumb'] = [
+            'Pemesanan' => '',
+        ];
+
+        $data['page'] = 'pemesanan/pemesanan_list';
+        $this->load->view('template/backend', $data);
+    }
+
     public function read($id)
     {
         $row = $this->Pemesanan_model->get_by_id($id);
@@ -261,6 +340,91 @@ class Pemesanan extends CI_Controller
         $this->load->view('template/backend', $data);
     }
     public function penumpang_pesan_action()
+    {
+
+        $pemesanan = array(
+            'id_user' => $this->input->post('id_user', TRUE),
+            'id_jadwal' => $this->input->post('id_jadwal', TRUE),
+            'status_pemesanan' => "Dipesan",
+            'tanggal_pemesanan' => date('Y-m-d'),
+        );
+
+        $id_pemesanan = $this->Pemesanan_model->insert($pemesanan);
+
+        $detail = array(
+            // 'id_jadwal' => $this->input->post('id_jadwal', TRUE),
+            'id_pemesanan' => $id_pemesanan,
+            'nama' => $this->input->post('nama', TRUE),
+            'nomor_hp' => $this->input->post('nomor_hp', TRUE),
+            'jenis_kelamin' => $this->input->post('jenis_kelamin', TRUE),
+        );
+        $this->Detail_pemesanan_model->insert($detail);
+        $this->session->set_flashdata('success', 'Create Record Success');
+        redirect(site_url('pembayaran/bayar/') . $id_pemesanan);
+    }
+
+
+    public function kasir_pesan()
+    {
+        $id_user = $this->ion_auth->user()->row();
+        $data = array(
+            'button' => 'Pesan Tiket',
+            'action' => site_url('pemesanan/kasir_pesan2'),
+            'id_pemesanan' => set_value('id_pemesanan'),
+            'id_user' => set_value('id_user', $id_user->id),
+            'id_jadwal' => set_value('id_jadwal'),
+            'status_pemesanan' => set_value('status_pemesanan'),
+            'tanggal_pemesanan' => set_value('tanggal_pemesanan'),
+        );
+        $data['jadwal_kapal'] = $this->db->query("SELECT * from jadwal")->result();
+
+        $data['title'] = 'Pemesanan Tiket';
+        $data['subtitle'] = '';
+        $data['crumb'] = [
+            'Dashboard' => '',
+        ];
+
+        $data['page'] = 'pemesanan/pemesanan_kasir';
+        $this->load->view('template/backend', $data);
+    }
+
+    public function kasir_pesan2()
+    {
+        $id_user = $this->input->post('id_user', TRUE);
+        // $alamat = $this->input->post('alamat', TRUE);
+        // $jenis_kelamin = $this->input->post('jenis_kelamin', TRUE);
+        // $nama = $this->input->post('nama', TRUE);
+        // $nomor_hp = $this->input->post('nomor_hp', TRUE);
+        // $kasir = $this->db->query("SELECT * from kasir where id_user=$id_user")->row();
+
+
+        // if ($kasir) {
+        //     $id_kasir = $kasir->id_kasir;
+        //     $alamat = $kasir->alamat;
+        //     $nomor_hp = $kasir->nomor_hp;
+        // }
+
+        $data = array(
+            'button' => 'Pesan Tiket',
+            'action' => site_url('pemesanan/kasir_pesan_action'),
+            'id_user' => $id_user,
+            'id_jadwal' => $this->input->post('id_jadwal', TRUE),
+            'status_pemesanan' => "Dipesan",
+            'tanggal_pemesanan' => date('Y-m-d'),
+            'alamat' => set_value('alamat'),
+            'jenis_kelamin' => set_value('jenis_kelamin'),
+            'nama' => set_value('nama'),
+            'nomor_hp' => set_value('nomor_hp'),
+        );
+        $data['title'] = 'Pemesanan Tiket';
+        $data['subtitle'] = '';
+        $data['crumb'] = [
+            'Dashboard' => '',
+        ];
+        $data['page'] = 'kasir/kasir_pesan';
+        $this->load->view('template/backend', $data);
+    }
+    public function kasir_pesan_action()
     {
 
         $pemesanan = array(
